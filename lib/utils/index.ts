@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify';
 import { RoutesApplier } from '../types/utils';
-import errors from './errors';
+import * as errors from './errors';
 
 /**
  * Takes an array with routes and applies

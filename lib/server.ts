@@ -1,5 +1,5 @@
 import fastify from 'fastify';
-import { applyRoutes } from './utils';
+import { applyRoutes, errors } from './utils';
 import { registerMiddlewares } from './middleware';
 import routes from './routes';
 import config from './config';
@@ -16,5 +16,6 @@ const server = fastify({
 
 registerMiddlewares(server);
 applyRoutes(server, routes);
+errors.handleErrors(server);
 
 export default server;
