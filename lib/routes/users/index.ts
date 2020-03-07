@@ -12,7 +12,29 @@ export const userRoutes = [
 				200: {
 					type: 'object',
 					properties: {
-						users: {},
+						users: {
+							type: 'array',
+							items: {
+								type: 'object',
+								properties: {
+									id: {
+										type: 'integer',
+									},
+									fullName: {
+										type: 'string',
+									},
+									email: {
+										type: 'string',
+									},
+									createdAt: {
+										type: 'string',
+									},
+									updatedAt: {
+										type: 'string',
+									},
+								},
+							},
+						},
 					},
 				},
 				500: {
