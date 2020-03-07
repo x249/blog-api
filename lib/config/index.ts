@@ -21,6 +21,8 @@ export default {
 	env: process.env.NODE_ENV,
 	port: parseInt(`${process.env.PORT}`, 10),
 	isDev: process.env.NODE_ENV === 'development',
+	isProd: process.env.NODE_ENV === 'production',
+	isTest: process.env.NODE_ENV === 'testing',
 	dbUrl: String(process.env.DATABASE_URL),
 	secret: String(process.env.SECRET),
 	logger: {
