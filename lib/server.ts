@@ -12,10 +12,18 @@ const server = fastify({
 		level: config.logger.level,
 		prettyPrint: true,
 	},
+	trustProxy: true,
 });
 
 registerMiddlewares(server);
 applyRoutes(server, routes);
 errors.handleErrors(server);
+
+server.ready(error => {
+	if (error) {
+		server.log.error(error);
+		process.exit(345);
+	}
+});
 
 export default server;
