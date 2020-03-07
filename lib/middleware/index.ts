@@ -17,8 +17,12 @@ const registerMiddlewares: (
 ) => void = (server: FastifyInstance) => {
 	server.register(fastifyCompress, {
 		global: true,
+		threshold: 5,
 	});
 	server.register(fastifyHelmet, {
+		referrerPolicy: {
+			policy: 'same-origin',
+		},
 		hidePoweredBy: {
 			setTo: 'PHP 4.2.0',
 		},
@@ -29,11 +33,17 @@ const registerMiddlewares: (
 				'default-src': ["'self'"],
 			},
 		},
+		permittedCrossDomainPolicies: {
+			permittedPolicies: 'master-only',
+		},
 		ieNoOpen: true,
-		xssFilter: true,
+		xssFilter: {
+			setOnOldIE: true,
+		},
 	});
 	server.register(fastifyCors, {
 		credentials: true,
+		origin: true,
 	});
 	server.register(fastifyJwt, {
 		secret: config.secret,
