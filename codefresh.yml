@@ -3,7 +3,7 @@ steps:
   main_clone:
     type: "git-clone"
     description: "Cloning main repository..."
-    repo: phr3nzy/blog-backend
+    repo: phr3nzy/blog-api
     revision: ${{CF_BRANCH}}
   perform_tests:
     image: node:12.14.0-alpine3.11
