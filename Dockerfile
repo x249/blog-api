@@ -1,4 +1,4 @@
-FROM node:12.14.0-alpine3.11 AS builder
+FROM node:12.16.1-alpine3.11 AS builder
 
 WORKDIR /app
 
@@ -17,7 +17,7 @@ RUN apk del build-dependencies
 
 COPY . .
 
-FROM node:12.14.0-alpine3.11
+FROM node:12.16.1-alpine3.11
 
 WORKDIR /app
 
