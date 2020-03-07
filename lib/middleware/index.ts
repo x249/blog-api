@@ -3,7 +3,9 @@ import fastifyCompress from 'fastify-compress';
 import fastifyHelmet from 'fastify-helmet';
 import fastifyCors from 'fastify-cors';
 import fastifySwagger from 'fastify-swagger';
+import fastifyMetrics from 'fastify-metrics';
 import { Server, IncomingMessage, ServerResponse } from 'http';
+import config from '../config';
 
 /**
  * Takes in a server instance and registers
@@ -13,6 +15,11 @@ import { Server, IncomingMessage, ServerResponse } from 'http';
 const registerMiddlewares: (
 	server: FastifyInstance<Server, IncomingMessage, ServerResponse>,
 ) => void = (server: FastifyInstance) => {
+	config.isProd &&
+		server.register(fastifyMetrics, {
+			endpoint: '/metrics',
+			enableDefaultMetrics: true,
+		});
 	server.register(fastifySwagger, {
 		routePrefix: '/docs',
 		swagger: {
