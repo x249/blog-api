@@ -7,13 +7,18 @@ import fastifyJwt from 'fastify-jwt';
 import { Server, IncomingMessage, ServerResponse } from 'http';
 import config from '../config';
 
+/**
+ * Takes in a server instance and registers
+ * the respective middlewares
+ * @param {FastifyInstance} server The instance of fastify
+ */
 const registerMiddlewares: (
-	fastify: FastifyInstance<Server, IncomingMessage, ServerResponse>,
-) => void = (fastify: FastifyInstance) => {
-	fastify.register(fastifyCompress, {
+	server: FastifyInstance<Server, IncomingMessage, ServerResponse>,
+) => void = (server: FastifyInstance) => {
+	server.register(fastifyCompress, {
 		global: true,
 	});
-	fastify.register(fastifyHelmet, {
+	server.register(fastifyHelmet, {
 		hidePoweredBy: {
 			setTo: 'PHP 4.2.0',
 		},
@@ -27,17 +32,17 @@ const registerMiddlewares: (
 		ieNoOpen: true,
 		xssFilter: true,
 	});
-	fastify.register(fastifyCors, {
+	server.register(fastifyCors, {
 		credentials: true,
 	});
-	fastify.register(fastifyJwt, {
+	server.register(fastifyJwt, {
 		secret: config.secret,
 		decode: {
 			complete: true,
 			json: true,
 		},
 	});
-	fastify.decorate(
+	server.decorate(
 		'authenticate',
 		async (request: FastifyRequest, reply: FastifyReply<ServerResponse>) => {
 			try {
