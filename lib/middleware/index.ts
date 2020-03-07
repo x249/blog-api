@@ -1,11 +1,9 @@
-import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { FastifyInstance } from 'fastify';
 import fastifyCompress from 'fastify-compress';
 import fastifyHelmet from 'fastify-helmet';
 import fastifyCors from 'fastify-cors';
-import fastifyJwt from 'fastify-jwt';
-// import fastifySwagger from 'fastify-swagger';
+import fastifySwagger from 'fastify-swagger';
 import { Server, IncomingMessage, ServerResponse } from 'http';
-import config from '../config';
 
 /**
  * Takes in a server instance and registers
@@ -15,6 +13,41 @@ import config from '../config';
 const registerMiddlewares: (
 	server: FastifyInstance<Server, IncomingMessage, ServerResponse>,
 ) => void = (server: FastifyInstance) => {
+	server.register(fastifySwagger, {
+		routePrefix: '/docs',
+		swagger: {
+			info: {
+				title: 'Blog API',
+				description: 'Swagger spec for the Technohexia Blog API',
+				version: '1.0.0',
+			},
+			externalDocs: {
+				url: 'https://swagger.io',
+				description: 'Find more info here',
+			},
+			host: 'localhost:3000',
+			schemes: ['http', 'https', 'http/2'],
+			consumes: ['application/json'],
+			produces: ['application/json'],
+			tags: [{ name: 'user', description: 'User related end-points' }],
+			definitions: {
+				User: {
+					$id: 'User',
+					type: 'object',
+					required: ['id', 'fullName', 'email', 'password'],
+					properties: {
+						id: { type: 'integer' },
+						firstName: { type: 'string', nullable: false },
+						email: { type: 'string', format: 'email' },
+						password: { type: 'string', nullable: true },
+						createdAt: { type: 'string', nullable: true },
+						updatedAt: { type: 'string', nullable: true },
+					},
+				},
+			},
+		},
+		exposeRoute: true,
+	});
 	server.register(fastifyCompress, {
 		global: true,
 		threshold: 5,
@@ -45,23 +78,6 @@ const registerMiddlewares: (
 		credentials: true,
 		origin: true,
 	});
-	server.register(fastifyJwt, {
-		secret: config.secret,
-		decode: {
-			complete: true,
-			json: true,
-		},
-	});
-	server.decorate(
-		'authenticate',
-		async (request: FastifyRequest, reply: FastifyReply<ServerResponse>) => {
-			try {
-				await request.jwtVerify();
-			} catch (error) {
-				reply.send({ error });
-			}
-		},
-	);
 };
 
 export { registerMiddlewares };
