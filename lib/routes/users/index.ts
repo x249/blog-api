@@ -15,6 +15,25 @@ export const userRoutes = [
 						users: {},
 					},
 				},
+				500: {
+					type: 'object',
+					properties: {
+						error: {
+							type: 'object',
+							properties: {
+								name: {
+									type: 'string',
+								},
+								message: {
+									type: 'string',
+								},
+								statusCode: {
+									type: 'integer',
+								},
+							},
+						},
+					},
+				},
 			},
 		},
 		handler: (async (
@@ -26,7 +45,7 @@ export const userRoutes = [
 
 				reply.code(200).send({ users });
 			} catch (error) {
-				reply.code(error.statusCode).send({ ...error });
+				reply.code(error.statusCode || 500).send({ ...error });
 			}
 		}) as RouteHandler,
 	},
@@ -127,6 +146,25 @@ export const userRoutes = [
 						},
 					},
 				},
+				500: {
+					type: 'object',
+					properties: {
+						error: {
+							type: 'object',
+							properties: {
+								name: {
+									type: 'string',
+								},
+								message: {
+									type: 'string',
+								},
+								statusCode: {
+									type: 'integer',
+								},
+							},
+						},
+					},
+				},
 			},
 		},
 		handler: (async (
@@ -142,7 +180,225 @@ export const userRoutes = [
 					user,
 				});
 			} catch (error) {
-				reply.code(error.statusCode).send({ error });
+				reply.code(error.statusCode || 500).send({ error });
+			}
+		}) as RouteHandler,
+	},
+	{
+		method: 'POST',
+		url: '/api/v1/user/new',
+		schema: {
+			body: {
+				type: 'object',
+				properties: {
+					fullName: {
+						type: 'string',
+					},
+					email: {
+						type: 'string',
+					},
+					password: {
+						type: 'string',
+					},
+				},
+			},
+			response: {
+				200: {
+					type: 'object',
+					properties: {
+						user: {
+							type: 'object',
+							properties: {
+								id: {
+									type: 'number',
+								},
+								fullName: {
+									type: 'string',
+								},
+								email: {
+									type: 'string',
+								},
+								createdAt: {
+									type: 'string',
+								},
+								updatedAt: {
+									type: 'string',
+								},
+							},
+						},
+						token: {
+							type: 'string',
+						},
+					},
+				},
+				400: {
+					type: 'object',
+					properties: {
+						error: {
+							type: 'object',
+							properties: {
+								name: {
+									type: 'string',
+								},
+								message: {
+									type: 'string',
+								},
+								statusCode: {
+									type: 'integer',
+								},
+							},
+						},
+					},
+					500: {
+						type: 'object',
+						properties: {
+							error: {
+								type: 'object',
+								properties: {
+									name: {
+										type: 'string',
+									},
+									message: {
+										type: 'string',
+									},
+									statusCode: {
+										type: 'integer',
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		handler: (async (
+			request: FastifyRequest,
+			reply: FastifyReply<ServerResponse>,
+		) => {
+			try {
+				const newUserPayload = await userController.createUser(request.body);
+
+				reply.code(200).send(newUserPayload);
+			} catch (error) {
+				reply.code(error.statusCode || 500).send({ error });
+			}
+		}) as RouteHandler,
+	},
+	{
+		method: 'POST',
+		url: '/api/v1/user/authenticate',
+		schema: {
+			body: {
+				type: 'object',
+				properties: {
+					email: {
+						type: 'string',
+					},
+					password: {
+						type: 'string',
+					},
+				},
+			},
+			response: {
+				200: {
+					type: 'object',
+					properties: {
+						user: {
+							type: 'object',
+							properties: {
+								id: {
+									type: 'number',
+								},
+								fullName: {
+									type: 'string',
+								},
+								email: {
+									type: 'string',
+								},
+								createdAt: {
+									type: 'string',
+								},
+								updatedAt: {
+									type: 'string',
+								},
+							},
+						},
+						token: {
+							type: 'string',
+						},
+					},
+				},
+				403: {
+					type: 'object',
+					properties: {
+						error: {
+							type: 'object',
+							properties: {
+								name: {
+									type: 'string',
+								},
+								message: {
+									type: 'string',
+								},
+								statusCode: {
+									type: 'integer',
+								},
+							},
+						},
+					},
+					404: {
+						type: 'object',
+						properties: {
+							error: {
+								type: 'object',
+								properties: {
+									name: {
+										type: 'string',
+									},
+									message: {
+										type: 'string',
+									},
+									statusCode: {
+										type: 'integer',
+									},
+								},
+							},
+						},
+						500: {
+							type: 'object',
+							properties: {
+								error: {
+									type: 'object',
+									properties: {
+										name: {
+											type: 'string',
+										},
+										message: {
+											type: 'string',
+										},
+										statusCode: {
+											type: 'integer',
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		handler: (async (
+			request: FastifyRequest,
+			reply: FastifyReply<ServerResponse>,
+		) => {
+			try {
+				const authenticateUserPayload = await userController.authenticateUser(
+					request.body,
+				);
+
+				reply.code(200).send(authenticateUserPayload);
+			} catch (error) {
+				reply.code(error.statusCode || 500).send({ error });
 			}
 		}) as RouteHandler,
 	},
