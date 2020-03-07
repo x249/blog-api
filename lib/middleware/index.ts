@@ -76,8 +76,15 @@ const registerMiddlewares: (
 		},
 	});
 	server.register(fastifyCors, {
-		credentials: true,
-		origin: true,
+		methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+		credentials: false,
+		preflightContinue: false,
+		maxAge: 86400,
+		origin: [
+			/^https?:\/\/admin\.technohexia\.com\/?[\s]$/,
+			/^https?:\/\/.*\.technohexia\.com\/?[\s]$/,
+			/^https?:\/\/localhost(?:\:[0-9]{1,4})?\/[\s]?$/,
+		],
 	});
 };
 
