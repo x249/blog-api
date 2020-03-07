@@ -59,13 +59,14 @@ const registerMiddlewares: (
 		hidePoweredBy: {
 			setTo: 'PHP 4.2.0',
 		},
-		contentSecurityPolicy: {
-			browserSniff: false,
-			disableAndroid: true,
-			directives: {
-				'default-src': ["'self'"],
-			},
-		},
+		// TODO: refactor to use swagger + CSP
+		// contentSecurityPolicy: {
+		// 	browserSniff: false,
+		// 	disableAndroid: true,
+		// 	directives: {
+		// 		'default-src': ["'self'"],
+		// 	},
+		// },
 		permittedCrossDomainPolicies: {
 			permittedPolicies: 'master-only',
 		},
