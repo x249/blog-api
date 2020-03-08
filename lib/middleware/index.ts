@@ -4,8 +4,10 @@ import fastifyHelmet from 'fastify-helmet';
 import fastifyCors from 'fastify-cors';
 import fastifySwagger from 'fastify-swagger';
 import fastifyMetrics from 'fastify-metrics';
+import underPressure from 'under-pressure';
 import { Server, IncomingMessage, ServerResponse } from 'http';
 import config from '../config';
+import { db } from '../db';
 
 /**
  * Takes in a server instance and registers
@@ -20,6 +22,30 @@ const registerMiddlewares: (
 			endpoint: '/metrics',
 			enableDefaultMetrics: true,
 		});
+	server.register(underPressure, {
+		maxEventLoopDelay: 1000,
+		maxHeapUsedBytes: 100000000,
+		maxRssBytes: 100000000,
+		retryAfter: 50,
+		exposeStatusRoute: {
+			routeOpts: {
+				logLevel: config.logger.level,
+			},
+			url: '/alive',
+		},
+		healthCheck: async () => {
+			try {
+				const result = await db.raw('select 1+1 as result');
+				if (result) return true;
+
+				return false;
+			} catch (error) {
+				server.log.error(error);
+				return false;
+			}
+		},
+		healthCheckInterval: 500,
+	});
 	server.register(fastifySwagger, {
 		routePrefix: '/docs',
 		swagger: {
