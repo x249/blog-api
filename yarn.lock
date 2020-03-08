@@ -1019,10 +1019,10 @@ fastify-helmet@=3.0.2:
     referrer-policy "^1.1.0"
     x-xss-protection "^1.1.0"
 
-fastify-metrics@=5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/fastify-metrics/-/fastify-metrics-5.0.0.tgz#3b28ef0a2a0a6366d4fcf0904a69dcb06dae088b"
-  integrity sha512-tjUOm84PUUeDLERdE35cvf0phGPbIkQq5x49TM2ZHPZ0hd5n4cQPozF38ZDq0I+4ahpXB0Z8/kY0FpbAR6URKA==
+fastify-metrics@5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/fastify-metrics/-/fastify-metrics-5.0.1.tgz#561ad44715b5dea38f87a7301d9f4d2685be69a3"
+  integrity sha512-t9ZydwJIRo04EXEQa3oL7s0Jz+XYAfzTeiXVroDNXFWDuDVmbRHEjz7JOdfzhMb+TuaZdSm4zHxVZJtVjzpDng==
   dependencies:
     fastify-plugin "^1.6.0"
     prom-client "^12.0.0"
