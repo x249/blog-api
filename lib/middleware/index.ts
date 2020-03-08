@@ -1,5 +1,4 @@
 import { FastifyInstance } from 'fastify';
-import fastifyCompress from 'fastify-compress';
 import fastifyHelmet from 'fastify-helmet';
 import fastifyCors from 'fastify-cors';
 import fastifySwagger from 'fastify-swagger';
@@ -80,10 +79,6 @@ const registerMiddlewares: (
 			},
 		},
 		exposeRoute: true,
-	});
-	server.register(fastifyCompress, {
-		global: true,
-		threshold: 5,
 	});
 	server.register(fastifyHelmet, {
 		referrerPolicy: {
