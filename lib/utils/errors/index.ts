@@ -5,6 +5,7 @@ import {
 	NotNullViolationError,
 	UniqueViolationError,
 	wrapError,
+	DBError,
 } from 'db-errors';
 import { ServerResponse } from 'http';
 import { HTTP400Error } from './http400Error';
@@ -32,7 +33,7 @@ const handleErrors: ErrorHandler = (server: FastifyInstance) => {
 					reply.code(error.statusCode).send({ error });
 				}
 				reply.code(500).send({ error: 'Internal Server Error' });
-			} else {
+			} else if (error instanceof DBError) {
 				const wrappedError = wrapError(error);
 				if (wrappedError instanceof UniqueViolationError) {
 					reply.code(400).send({
@@ -87,6 +88,8 @@ const handleErrors: ErrorHandler = (server: FastifyInstance) => {
 						},
 					});
 				}
+			} else {
+				reply.code(500).send({ error });
 			}
 		},
 	);
