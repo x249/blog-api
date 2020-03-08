@@ -10,12 +10,14 @@ COPY package.json .
 # required for argon2
 RUN npm i -g node-gyp
 
-RUN npm i
+RUN yarn install
 
 # some cleanup
 RUN apk del build-dependencies
 
 COPY . .
+
+RUN yarn build
 
 FROM node:12.16.1-alpine3.11
 
