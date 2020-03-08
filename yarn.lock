@@ -806,6 +806,13 @@ eslint-plugin-prettier@=3.1.2:
   dependencies:
     prettier-linter-helpers "^1.0.0"
 
+eslint-plugin-security@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-security/-/eslint-plugin-security-1.4.0.tgz#d4f314484a80b1b613b8c8886e84f52efe1526c2"
+  integrity sha512-xlS7P2PLMXeqfhyf3NpqbvbnW04kN8M9NtmhpR3XGyOvt/vNKS7XPXT5EDbwKW9vCjWH4PpfQvgD/+JgN0VJKA==
+  dependencies:
+    safe-regex "^1.1.0"
+
 eslint-scope@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/eslint-scope/-/eslint-scope-5.0.0.tgz#e87c8887c73e8d1ec84f1ca591645c358bfc8fb9"
@@ -3323,7 +3330,7 @@ unc-path-regex@^0.1.2:
   resolved "https://registry.yarnpkg.com/unc-path-regex/-/unc-path-regex-0.1.2.tgz#e73dd3d7b0d7c5ed86fbac6b0ae7d8c6a69d50fa"
   integrity sha1-5z3T17DXxe2G+6xrCufYxqadUPo=
 
-under-pressure@^3.2.1:
+under-pressure@=3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/under-pressure/-/under-pressure-3.2.1.tgz#44cfe0c9a1991c17c62bd0a2824066dc2a45a357"
   integrity sha512-IWR3AgjskkHukFB3AZM9odR1KLLh4/u0Ssc5BU1QJOd73023F1AIRjhIgkqr4upAWTxopX/3C02N5VpGoW7E3g==
