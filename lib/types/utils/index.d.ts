@@ -5,7 +5,7 @@ import { DBError } from 'db-errors';
 
 export type RoutesApplier = (
 	fastify: FastifyInstance<Server, IncomingMessage, ServerResponse>,
-	routes: any[],
+	routes: object[],
 ) => void;
 
 export type APIError = Error | DBError | HTTPClientError;
