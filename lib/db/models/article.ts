@@ -56,7 +56,7 @@ export class Article extends BaseModel {
 				},
 			},
 			category: {
-				relaton: BaseModel.BelongsToOneRelation,
+				relation: BaseModel.BelongsToOneRelation,
 				modelClass: Category,
 				join: {
 					from: 'article.category_id',
