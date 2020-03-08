@@ -50,3 +50,7 @@ $ yarn start
 LOG_LEVEL='info'
 DISABLE_LOGGING=false
 ```
+
+## License
+
+MIT
