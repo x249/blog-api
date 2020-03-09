@@ -22,9 +22,9 @@ const registerMiddlewares: (
 			enableDefaultMetrics: true,
 		});
 	server.register(underPressure, {
-		maxEventLoopDelay: 1000,
-		maxHeapUsedBytes: 100000000,
-		maxRssBytes: 100000000,
+		maxEventLoopDelay: config.isProd ? 1000 : Infinity,
+		maxHeapUsedBytes: config.isProd ? 100000000 : Infinity,
+		maxRssBytes: config.isProd ? 100000000 : Infinity,
 		retryAfter: 50,
 		exposeStatusRoute: {
 			routeOpts: {
