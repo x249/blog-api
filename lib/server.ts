@@ -12,6 +12,7 @@ const server = fastify({
 		level: config.logger.level,
 		prettyPrint: true,
 	},
+	bodyLimit: 8 * 1024,
 	trustProxy: true,
 });
 
