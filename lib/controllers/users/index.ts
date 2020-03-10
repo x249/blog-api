@@ -1,9 +1,10 @@
 import { models } from '../../db';
 import {
-	GetUserParams,
-	GetUserByIdParams,
-	CreateUserParams,
-	AuthenticateUserParams,
+	GetAllUsers,
+	GetUser,
+	GetUserById,
+	CreateUser,
+	AuthenticateUser,
 } from '../../types/controllers/users';
 import { checks } from '../../helpers';
 import { errors } from '../../utils';
@@ -16,7 +17,7 @@ const { User } = models;
  * Fetch all users
  * @returns {Promise<User[]>} Returned Users
  */
-const getAllUsers = async () => {
+const getAllUsers: GetAllUsers = async () => {
 	const users = await User.query();
 
 	return users;
@@ -29,7 +30,7 @@ const getAllUsers = async () => {
  * @param params.email User Email
  * @returns {Promise<User>} Returned User
  */
-const getUser = async (params: GetUserParams) => {
+const getUser: GetUser = async params => {
 	const user = await User.query().findOne({
 		...params,
 	});
@@ -47,7 +48,7 @@ const getUser = async (params: GetUserParams) => {
  * @param params.id User ID
  * @returns {Promise<User>} Returned User
  */
-const getUserById = async (params: GetUserByIdParams) => {
+const getUserById: GetUserById = async params => {
 	const user = await User.query().findById(params.id);
 
 	const userExists = checks.entityExists(user);
@@ -63,7 +64,7 @@ const getUserById = async (params: GetUserByIdParams) => {
  * @param params.fullName Users' full name
  * @param params.password Users' password
  */
-const createUser = async (params: CreateUserParams) => {
+const createUser: CreateUser = async params => {
 	const user = await User.query()
 		.findOne({
 			email: params.email,
@@ -102,7 +103,7 @@ const createUser = async (params: CreateUserParams) => {
  * @param params.email Users' email
  * @param params.password Users' password
  */
-const authenticateUser = async (params: AuthenticateUserParams) => {
+const authenticateUser: AuthenticateUser = async params => {
 	const user = await User.query().findOne({ email: params.email });
 
 	const userExists = checks.entityExists(user);
