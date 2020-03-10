@@ -20,7 +20,7 @@ import config from '../../config';
  * Handle errors related to User actions and DB actions
  * @param server Fastify instance
  */
-const handleErrors: ErrorHandler = (server: FastifyInstance) => {
+const handleErrors: ErrorHandler = server => {
 	return server.addHook(
 		'onError',
 		async (

@@ -1,7 +1,7 @@
 import server from '../../lib/server';
 import { db } from '../../lib/db';
 
-module.exports = async () => {
+module.exports = (async () => {
 	try {
 		await db.destroy();
 		server.close();
@@ -11,4 +11,4 @@ module.exports = async () => {
 		server.close();
 		process.exit(23);
 	}
-};
+}) as () => Promise<void>;

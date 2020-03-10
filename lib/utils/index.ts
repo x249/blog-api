@@ -1,4 +1,3 @@
-import { FastifyInstance } from 'fastify';
 import { RoutesApplier } from '../types/utils';
 import * as errors from './errors';
 
@@ -9,8 +8,8 @@ import * as errors from './errors';
  * @param {any[]} routes The routes to be applied
  */
 // eslint-disable-next-line
-export const applyRoutes = ((server: FastifyInstance, routes: any[]) => {
+const applyRoutes: RoutesApplier = (server, routes) => {
 	routes.forEach(route => server.route(route));
-}) as RoutesApplier;
+};
 
-export { errors };
+export { applyRoutes, errors };
