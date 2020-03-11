@@ -3,7 +3,7 @@ import { ServerResponse } from 'http';
 import { userController } from '../../controllers';
 import { RouteHandler } from '../../types/routes';
 import {
-	getUsersSchema,
+	getAllUsersSchema,
 	getUserSchema,
 	newUserSchema,
 	authenticateUserSchema,
@@ -15,7 +15,7 @@ export const userRoutes = [
 	{
 		method: 'GET',
 		url: '/api/v1/users',
-		schema: getUsersSchema,
+		schema: getAllUsersSchema,
 		handler: (async (
 			request: FastifyRequest,
 			reply: FastifyReply<ServerResponse>,

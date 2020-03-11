@@ -1,4 +1,4 @@
-export const getUsersSchema = {
+export const getAllUsersSchema = {
 	response: {
 		200: {
 			description: 'Successfully requested all users',
