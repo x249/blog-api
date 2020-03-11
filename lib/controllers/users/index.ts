@@ -5,6 +5,8 @@ import {
 	GetUserById,
 	CreateUser,
 	AuthenticateUser,
+	UpdateUserById,
+	DeleteUserById,
 } from '../../types/controllers/users';
 import { checks } from '../../helpers';
 import { errors } from '../../utils';
@@ -129,10 +131,71 @@ const authenticateUser: AuthenticateUser = async params => {
 	};
 };
 
+/**
+ * Update a user using their ID
+ * @param userId User ID
+ * @param params Properties to update in the user
+ * @param params.email Updated user email
+ * @param params.fullName Updated user full name
+ * @param params.password Updated user password
+ * @returns {Promise<User>} User with updated fields
+ */
+const updateUserById: UpdateUserById = async (userId, params) => {
+	const user = await User.query()
+		.findById(userId)
+		.select('id');
+
+	const userExists = checks.entityExists(user);
+
+	if (!userExists) throw new errors.HTTP404Error('User not found!');
+
+	if (params.password) {
+		const hashedPassword = await hash(params.password, {
+			parallelism: 2,
+			memoryCost: 8192,
+			version: argon2i,
+		});
+
+		const updatedUser = user.$query().patchAndFetch({
+			...params,
+			password: hashedPassword,
+		});
+
+		return updatedUser;
+	}
+
+	const updatedUser = user.$query().patchAndFetch({
+		...params,
+	});
+
+	return updatedUser;
+};
+
+/**
+ * Delete a user using their ID
+ * @param userId User ID
+ * @returns {Promise<User[]>} Deleted User(s)
+ */
+const deleteUserById: DeleteUserById = async userId => {
+	const user = await User.query().findById(userId);
+
+	const userExists = checks.entityExists(user);
+
+	if (!userExists) throw new errors.HTTP404Error('User not found!');
+
+	const deletedUser = await User.query()
+		.deleteById(userId)
+		.returning('*');
+
+	return deletedUser;
+};
+
 export default {
 	getAllUsers,
 	getUser,
 	getUserById,
 	createUser,
 	authenticateUser,
+	updateUserById,
+	deleteUserById,
 };

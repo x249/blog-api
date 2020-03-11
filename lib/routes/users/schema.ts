@@ -266,21 +266,21 @@ export const newUserSchema = {
 					},
 				},
 			},
-			500: {
-				type: 'object',
-				properties: {
-					error: {
-						type: 'object',
-						properties: {
-							name: {
-								type: 'string',
-							},
-							message: {
-								type: 'string',
-							},
-							statusCode: {
-								type: 'integer',
-							},
+		},
+		500: {
+			type: 'object',
+			properties: {
+				error: {
+					type: 'object',
+					properties: {
+						name: {
+							type: 'string',
+						},
+						message: {
+							type: 'string',
+						},
+						statusCode: {
+							type: 'integer',
 						},
 					},
 				},
@@ -348,40 +348,215 @@ export const authenticateUserSchema = {
 					},
 				},
 			},
-			404: {
-				type: 'object',
-				properties: {
-					error: {
-						type: 'object',
-						properties: {
-							name: {
-								type: 'string',
-							},
-							message: {
-								type: 'string',
-							},
-							statusCode: {
-								type: 'integer',
-							},
+		},
+		404: {
+			type: 'object',
+			properties: {
+				error: {
+					type: 'object',
+					properties: {
+						name: {
+							type: 'string',
+						},
+						message: {
+							type: 'string',
+						},
+						statusCode: {
+							type: 'integer',
 						},
 					},
 				},
-				500: {
+			},
+		},
+		500: {
+			type: 'object',
+			properties: {
+				error: {
 					type: 'object',
 					properties: {
-						error: {
-							type: 'object',
-							properties: {
-								name: {
-									type: 'string',
-								},
-								message: {
-									type: 'string',
-								},
-								statusCode: {
-									type: 'integer',
-								},
-							},
+						name: {
+							type: 'string',
+						},
+						message: {
+							type: 'string',
+						},
+						statusCode: {
+							type: 'integer',
+						},
+					},
+				},
+			},
+		},
+	},
+};
+
+export const updateUserSchema = {
+	type: 'object',
+	properties: {
+		id: {
+			type: 'integer',
+			description: 'User ID',
+		},
+	},
+	body: {
+		type: 'object',
+		properties: {
+			email: {
+				type: 'string',
+			},
+			fullName: {
+				type: 'string',
+			},
+			password: {
+				type: 'string',
+			},
+		},
+	},
+	response: {
+		200: {
+			type: 'object',
+			description: 'Successfully updated a user',
+			properties: {
+				user: {
+					type: 'object',
+					properties: {
+						id: {
+							type: 'number',
+						},
+						fullName: {
+							type: 'string',
+						},
+						email: {
+							type: 'string',
+						},
+						createdAt: {
+							type: 'string',
+						},
+						updatedAt: {
+							type: 'string',
+						},
+					},
+				},
+			},
+		},
+		404: {
+			type: 'object',
+			description: 'User not found error',
+			properties: {
+				error: {
+					type: 'object',
+					properties: {
+						name: {
+							type: 'string',
+						},
+						message: {
+							type: 'string',
+						},
+						statusCode: {
+							type: 'integer',
+						},
+					},
+				},
+			},
+		},
+		500: {
+			type: 'object',
+			description: 'Internal server error',
+			properties: {
+				error: {
+					type: 'object',
+					properties: {
+						name: {
+							type: 'string',
+						},
+						message: {
+							type: 'string',
+						},
+						statusCode: {
+							type: 'integer',
+						},
+					},
+				},
+			},
+		},
+	},
+};
+
+export const deleteUserSchema = {
+	params: {
+		type: 'object',
+		properties: {
+			id: {
+				type: 'integer',
+				description: 'User ID',
+			},
+		},
+	},
+	response: {
+		200: {
+			type: 'object',
+			description: 'Successfully deleted a user',
+			properties: {
+				user: {
+					type: 'object',
+					properties: {
+						id: {
+							type: 'number',
+						},
+						fullName: {
+							type: 'string',
+						},
+						email: {
+							type: 'string',
+						},
+						password: {
+							type: 'string',
+						},
+						createdAt: {
+							type: 'string',
+						},
+						updatedAt: {
+							type: 'string',
+						},
+					},
+				},
+			},
+		},
+		404: {
+			type: 'object',
+			description: 'User not found error',
+			properties: {
+				error: {
+					type: 'object',
+					properties: {
+						name: {
+							type: 'string',
+						},
+						message: {
+							type: 'string',
+						},
+						statusCode: {
+							type: 'integer',
+						},
+					},
+				},
+			},
+		},
+		500: {
+			type: 'object',
+			description: 'Internal server error',
+			properties: {
+				error: {
+					type: 'object',
+					properties: {
+						name: {
+							type: 'string',
+						},
+						message: {
+							type: 'string',
+						},
+						statusCode: {
+							type: 'integer',
 						},
 					},
 				},
