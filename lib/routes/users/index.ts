@@ -7,6 +7,8 @@ import {
 	getUserSchema,
 	newUserSchema,
 	authenticateUserSchema,
+	updateUserSchema,
+	deleteUserSchema,
 } from './schema';
 
 export const userRoutes = [
@@ -79,6 +81,45 @@ export const userRoutes = [
 				);
 
 				reply.code(200).send(authenticateUserPayload);
+			} catch (error) {
+				reply.code(error.statusCode || 500).send({ error });
+			}
+		}) as RouteHandler,
+	},
+	{
+		method: 'PATCH',
+		url: '/api/v1/user/:id',
+		schema: updateUserSchema,
+		handler: (async (
+			request: FastifyRequest,
+			reply: FastifyReply<ServerResponse>,
+		) => {
+			try {
+				const updatedUser = await userController.updateUserById(
+					request.params.id,
+					request.body,
+				);
+
+				reply.code(200).send({ user: updatedUser });
+			} catch (error) {
+				reply.code(error.statusCode || 500).send({ error });
+			}
+		}) as RouteHandler,
+	},
+	{
+		method: 'DELETE',
+		url: '/api/v1/user/:id',
+		schema: deleteUserSchema,
+		handler: (async (
+			request: FastifyRequest,
+			reply: FastifyReply<ServerResponse>,
+		) => {
+			try {
+				const deletedUser = await userController.deleteUserById(
+					request.params.id,
+				);
+
+				reply.code(200).send({ user: deletedUser });
 			} catch (error) {
 				reply.code(error.statusCode || 500).send({ error });
 			}
