@@ -135,6 +135,49 @@ describe('user controllers', () => {
 		}
 	});
 
+	test('should successfully update a user using their id', async (done: jest.DoneCallback) => {
+		const updatedUser = await userController.updateUserById(1, {
+			fullName: 'New Testing User Full Name',
+		});
+
+		expect(updatedUser.fullName).toBe('New Testing User Full Name');
+		done();
+	});
+
+	test('should fail at updating a non-existing user using their id', async (done: jest.DoneCallback) => {
+		try {
+			await userController.updateUserById(12345, {
+				fullName: 'Non-existing User',
+			});
+			done();
+		} catch (error) {
+			expect(error.name).toBe('ERR_NOT_FOUND');
+			expect(error.message).toBe('User not found!');
+			expect(error.statusCode).toBe(404);
+			done();
+		}
+	});
+
+	test('should successfully delete a user using their id', async (done: jest.DoneCallback) => {
+		// eslint-disable-next-line
+		const deletedUser: any = await userController.deleteUserById(1);
+
+		expect(deletedUser.id).toBe(1);
+		done();
+	});
+
+	test('should fail at deleting a non-existing user using their id', async (done: jest.DoneCallback) => {
+		try {
+			await userController.deleteUserById(12345);
+			done();
+		} catch (error) {
+			expect(error.name).toBe('ERR_NOT_FOUND');
+			expect(error.message).toBe('User not found!');
+			expect(error.statusCode).toBe(404);
+			done();
+		}
+	});
+
 	afterAll(async (done: jest.DoneCallback) => {
 		const deletedRecords = await models.User.query()
 			.findOne({
