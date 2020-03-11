@@ -115,12 +115,19 @@ describe('user controllers', () => {
 	});
 
 	test('should successfully fetch a user using their id', async (done: jest.DoneCallback) => {
-		const fetchedUser = await userController.getUserById({ id: 1 });
+		try {
+			const fetchedUser = await userController.getUserById({ id: 1 });
 
-		expect(fetchedUser.id).toBe(1);
-		expect(typeof fetchedUser.email).toBe('string');
-		expect(typeof fetchedUser.fullName).toBe('string');
-		done();
+			expect(fetchedUser.id).toBe(1);
+			expect(typeof fetchedUser.email).toBe('string');
+			expect(typeof fetchedUser.fullName).toBe('string');
+			done();
+		} catch (error) {
+			expect(error.name).toBe('ERR_NOT_FOUND');
+			expect(error.message).toBe('User not found!');
+			expect(error.statusCode).toBe(404);
+			done();
+		}
 	});
 
 	test('should fail at fetching a non-existing user using their id', async (done: jest.DoneCallback) => {
@@ -136,12 +143,19 @@ describe('user controllers', () => {
 	});
 
 	test('should successfully update a user using their id', async (done: jest.DoneCallback) => {
-		const updatedUser = await userController.updateUserById(1, {
-			fullName: 'New Testing User Full Name',
-		});
+		try {
+			const updatedUser = await userController.updateUserById(1, {
+				fullName: 'New Testing User Full Name',
+			});
 
-		expect(updatedUser.fullName).toBe('New Testing User Full Name');
-		done();
+			expect(updatedUser.fullName).toBe('New Testing User Full Name');
+			done();
+		} catch (error) {
+			expect(error.name).toBe('ERR_NOT_FOUND');
+			expect(error.message).toBe('User not found!');
+			expect(error.statusCode).toBe(404);
+			done();
+		}
 	});
 
 	test('should fail at updating a non-existing user using their id', async (done: jest.DoneCallback) => {
@@ -159,11 +173,18 @@ describe('user controllers', () => {
 	});
 
 	test('should successfully delete a user using their id', async (done: jest.DoneCallback) => {
-		// eslint-disable-next-line
-		const deletedUser: any = await userController.deleteUserById(1);
+		try {
+			// eslint-disable-next-line
+			const deletedUser: any = await userController.deleteUserById(1);
 
-		expect(deletedUser.id).toBe(1);
-		done();
+			expect(deletedUser.id).toBe(1);
+			done();
+		} catch (error) {
+			expect(error.name).toBe('ERR_NOT_FOUND');
+			expect(error.message).toBe('User not found!');
+			expect(error.statusCode).toBe(404);
+			done();
+		}
 	});
 
 	test('should fail at deleting a non-existing user using their id', async (done: jest.DoneCallback) => {
