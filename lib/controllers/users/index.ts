@@ -89,7 +89,7 @@ const createUser: CreateUser = async params => {
 		password: hashedPassword,
 	});
 
-	const token = await jwt.generateToken({
+	const token = jwt.generateToken({
 		id: Number(createdUser.id),
 		expiresIn: '2d',
 	});
@@ -120,7 +120,7 @@ const authenticateUser: AuthenticateUser = async params => {
 
 	if (!passwordsMatch) throw new errors.HTTP403Error('Invalid credentials!');
 
-	const token = await jwt.generateToken({
+	const token = jwt.generateToken({
 		id: Number(user.id),
 		expiresIn: '2d',
 	});
