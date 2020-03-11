@@ -30,11 +30,6 @@ interface UpdateUserParams {
 	password?: string;
 }
 
-interface AuthPayload {
-	user: User;
-	token: string;
-}
-
 export type GetAllUsers = () => Promise<User[]>;
 
 export type GetUser = (params: GetUserParams) => Promise<User>;
