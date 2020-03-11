@@ -10,7 +10,7 @@ services:
       - dbvolume:/data
     environment: {
       POSTGRES_USER: "blog-user",
-      POSTGRES_PASS: "password",
+      POSTGRES_PASSWORD: "password",
       POSTGRES_DB: "blog-prod"
     }
 
