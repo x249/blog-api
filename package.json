@@ -11,6 +11,8 @@
 		"start": "node dist",
 		"dev": "tsc-watch --onSuccess 'node dist/index.js'",
 		"run-migrations": "knex migrate:up",
+		"test": "jest --verbose --detectOpenHandles",
+		"coverage": "jest --coverage --verbose --detectOpenHandles",
 		"lint": "eslint --ext .ts,.js . --ignore-path .gitignore",
 		"fix": "eslint --ext .ts,.js . --ignore-path .gitignore --fix"
 	},
@@ -35,6 +37,7 @@
 		"under-pressure": "=3.2.1"
 	},
 	"devDependencies": {
+		"@types/jest": "=25.1.4",
 		"@types/jsonwebtoken": "8.3.8",
 		"@types/node": "13.9.0",
 		"@typescript-eslint/eslint-plugin": "=2.22.0",
@@ -44,8 +47,10 @@
 		"eslint-plugin-prettier": "=3.1.2",
 		"eslint-plugin-security": "=1.4.0",
 		"husky": "=4.2.3",
+		"jest": "=25.1.0",
 		"lint-staged": "=10.0.8",
 		"prettier": "=1.19.1",
+		"ts-jest": "=25.2.1",
 		"ts-node": "=8.6.2",
 		"tsc-watch": "=4.2.3",
 		"typescript": "=3.8.3"
@@ -58,6 +63,30 @@
 	"lint-staged": {
 		"*.{js,ts,md,json}": [
 			"prettier --write"
+		]
+	},
+	"jest": {
+		"verbose": true,
+		"testEnvironment": "node",
+		"globalTeardown": "./tests/config/globalTeardown.ts",
+		"testPathIgnorePatterns": [
+			"node_modules",
+			"tests/config/*"
+		],
+		"transform": {
+			"^.+\\.tsx?$": "ts-jest"
+		},
+		"testRegex": [
+			"/tests?/[a-zA-Z0-9]{0,}\\.(test|spec)\\.(js|ts)[\\s]?",
+			"/tests?/.*/[a-zA-Z0-9]{0,}\\.(test|spec)\\.(js|ts)[\\s]?"
+		],
+		"moduleFileExtensions": [
+			"ts",
+			"tsx",
+			"js",
+			"jsx",
+			"json",
+			"node"
 		]
 	}
 }

@@ -28,7 +28,7 @@ const handleErrors: ErrorHandler = server => {
 			reply: FastifyReply<ServerResponse>,
 			error: APIError,
 		) => {
-			if (config.env === 'production') {
+			if (config.isProduction) {
 				if (error instanceof HTTPClientError) {
 					reply.code(error.statusCode).send({ error });
 				}

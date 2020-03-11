@@ -25,5 +25,5 @@
 		"esModuleInterop": true,
 		"inlineSources": true
 	},
-	"exclude": ["node_modules", "knexfile.ts"]
+	"exclude": ["node_modules", "knexfile.ts", "tests"]
 }

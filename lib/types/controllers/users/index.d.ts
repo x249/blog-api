@@ -1,35 +1,27 @@
 import { User } from '../../../db/models/user';
 
-export interface GetUserParams {
-	id: number;
+type AuthPayload = {
+	user: User;
+	token: string;
+};
+
+interface GetUserParams {
 	email: string;
 }
 
-export interface GetUserByIdParams {
+interface GetUserByIdParams {
 	id: number;
 }
 
-export interface CreateUserParams {
+interface CreateUserParams {
 	fullName: string;
 	email: string;
 	password: string;
 }
 
-export interface AuthenticateUserParams {
+interface AuthenticateUserParams {
 	email: string;
 	password: string;
-}
-
-interface UpdateUserParams {
-	email?: string;
-	fullName?: string;
-	password?: string;
-}
-
-interface UpdateUserParams {
-	email?: string;
-	fullName?: string;
-	password?: string;
 }
 
 interface UpdateUserParams {

@@ -16,15 +16,15 @@ import { db } from '../db';
 const registerMiddlewares: (
 	server: FastifyInstance<Server, IncomingMessage, ServerResponse>,
 ) => void = (server: FastifyInstance) => {
-	config.isProd &&
+	config.isProduction &&
 		server.register(fastifyMetrics, {
 			endpoint: '/metrics',
 			enableDefaultMetrics: true,
 		});
 	server.register(underPressure, {
-		maxEventLoopDelay: 1000,
-		maxHeapUsedBytes: 100000000,
-		maxRssBytes: 100000000,
+		maxEventLoopDelay: config.isProduction ? 1000 : Infinity,
+		maxHeapUsedBytes: config.isProduction ? 100000000 : Infinity,
+		maxRssBytes: config.isProduction ? 100000000 : Infinity,
 		retryAfter: 50,
 		exposeStatusRoute: {
 			routeOpts: {
