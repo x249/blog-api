@@ -1,9 +1,12 @@
 import { models } from '../../db';
 import {
-	GetUserParams,
-	GetUserByIdParams,
-	CreateUserParams,
-	AuthenticateUserParams,
+	GetAllUsers,
+	GetUser,
+	GetUserById,
+	CreateUser,
+	AuthenticateUser,
+	UpdateUserById,
+	DeleteUserById,
 } from '../../types/controllers/users';
 import { checks } from '../../helpers';
 import { errors } from '../../utils';
@@ -16,7 +19,7 @@ const { User } = models;
  * Fetch all users
  * @returns {Promise<User[]>} Returned Users
  */
-const getAllUsers = async () => {
+const getAllUsers: GetAllUsers = async () => {
 	const users = await User.query();
 
 	return users;
@@ -29,7 +32,7 @@ const getAllUsers = async () => {
  * @param params.email User Email
  * @returns {Promise<User>} Returned User
  */
-const getUser = async (params: GetUserParams) => {
+const getUser: GetUser = async params => {
 	const user = await User.query().findOne({
 		...params,
 	});
@@ -47,7 +50,7 @@ const getUser = async (params: GetUserParams) => {
  * @param params.id User ID
  * @returns {Promise<User>} Returned User
  */
-const getUserById = async (params: GetUserByIdParams) => {
+const getUserById: GetUserById = async params => {
 	const user = await User.query().findById(params.id);
 
 	const userExists = checks.entityExists(user);
@@ -63,7 +66,7 @@ const getUserById = async (params: GetUserByIdParams) => {
  * @param params.fullName Users' full name
  * @param params.password Users' password
  */
-const createUser = async (params: CreateUserParams) => {
+const createUser: CreateUser = async params => {
 	const user = await User.query()
 		.findOne({
 			email: params.email,
@@ -86,7 +89,10 @@ const createUser = async (params: CreateUserParams) => {
 		password: hashedPassword,
 	});
 
-	const token = await jwt.generateToken({ id: createdUser.id });
+	const token = jwt.generateToken({
+		id: Number(createdUser.id),
+		expiresIn: '2d',
+	});
 
 	return {
 		user: createdUser,
@@ -99,7 +105,7 @@ const createUser = async (params: CreateUserParams) => {
  * @param params.email Users' email
  * @param params.password Users' password
  */
-const authenticateUser = async (params: AuthenticateUserParams) => {
+const authenticateUser: AuthenticateUser = async params => {
 	const user = await User.query().findOne({ email: params.email });
 
 	const userExists = checks.entityExists(user);
@@ -114,12 +120,74 @@ const authenticateUser = async (params: AuthenticateUserParams) => {
 
 	if (!passwordsMatch) throw new errors.HTTP403Error('Invalid credentials!');
 
-	const token = await jwt.generateToken({ id: user.id });
+	const token = jwt.generateToken({
+		id: Number(user.id),
+		expiresIn: '2d',
+	});
 
 	return {
 		user,
 		token,
 	};
+};
+
+/**
+ * Update a user using their ID
+ * @param userId User ID
+ * @param params Properties to update in the user
+ * @param params.email Updated user email
+ * @param params.fullName Updated user full name
+ * @param params.password Updated user password
+ * @returns {Promise<User>} User with updated fields
+ */
+const updateUserById: UpdateUserById = async (userId, params) => {
+	const user = await User.query()
+		.findById(userId)
+		.select('id');
+
+	const userExists = checks.entityExists(user);
+
+	if (!userExists) throw new errors.HTTP404Error('User not found!');
+
+	if (params.password) {
+		const hashedPassword = await hash(params.password, {
+			parallelism: 2,
+			memoryCost: 8192,
+			version: argon2i,
+		});
+
+		const updatedUser = user.$query().patchAndFetch({
+			...params,
+			password: hashedPassword,
+		});
+
+		return updatedUser;
+	}
+
+	const updatedUser = user.$query().patchAndFetch({
+		...params,
+	});
+
+	return updatedUser;
+};
+
+/**
+ * Delete a user using their ID
+ * @param userId User ID
+ * @returns {Promise<User[]>} Deleted User(s)
+ */
+const deleteUserById: DeleteUserById = async userId => {
+	const user = await User.query().findById(userId);
+
+	const userExists = checks.entityExists(user);
+
+	if (!userExists) throw new errors.HTTP404Error('User not found!');
+
+	const deletedUser = await User.query()
+		.deleteById(userId)
+		.returning('*');
+
+	return deletedUser;
 };
 
 export default {
@@ -128,4 +196,6 @@ export default {
 	getUserById,
 	createUser,
 	authenticateUser,
+	updateUserById,
+	deleteUserById,
 };

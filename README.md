@@ -1,5 +1,7 @@
 # Blog API
 
+[![Build Status](https://travis-ci.com/x249/blog-api.svg?branch=master)](https://travis-ci.com/x249/blog-api)
+[![codecov](https://codecov.io/gh/x249/blog-api/branch/master/graph/badge.svg)](https://codecov.io/gh/x249/blog-api)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=x249_blog-api&metric=alert_status)](https://sonarcloud.io/dashboard?id=x249_blog-api)
 
 A blog API built with Fastify and Objection.js (Knex-based ORM)

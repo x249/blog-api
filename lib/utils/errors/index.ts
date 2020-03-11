@@ -1,4 +1,4 @@
-import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { FastifyRequest, FastifyReply } from 'fastify';
 import {
 	CheckViolationError,
 	ForeignKeyViolationError,
@@ -20,7 +20,7 @@ import config from '../../config';
  * Handle errors related to User actions and DB actions
  * @param server Fastify instance
  */
-const handleErrors: ErrorHandler = (server: FastifyInstance) => {
+const handleErrors: ErrorHandler = server => {
 	return server.addHook(
 		'onError',
 		async (
@@ -28,7 +28,7 @@ const handleErrors: ErrorHandler = (server: FastifyInstance) => {
 			reply: FastifyReply<ServerResponse>,
 			error: APIError,
 		) => {
-			if (config.env === 'production') {
+			if (config.isProduction) {
 				if (error instanceof HTTPClientError) {
 					reply.code(error.statusCode).send({ error });
 				}

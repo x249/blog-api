@@ -12,6 +12,7 @@ const server = fastify({
 		level: config.logger.level,
 		prettyPrint: true,
 	},
+	bodyLimit: 8 * 1024,
 	trustProxy: true,
 });
 
@@ -24,7 +25,7 @@ server.ready(error => {
 		server.log.error(error);
 		process.exit(345);
 	}
-	config.isDev && server.log.info(`\n${server.printRoutes()}`);
+	config.isDevelopment && server.log.info(`\n${server.printRoutes()}`);
 });
 
 export default server;
