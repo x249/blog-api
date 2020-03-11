@@ -1,4 +1,4 @@
-import { FastifyRequest, FastifyReply } from 'fastify';
+import { FastifyRequest, FastifyReply, RouteOptions } from 'fastify';
 import { ServerResponse } from 'http';
 import { userController } from '../../controllers';
 import { RouteHandler } from '../../types/routes';
@@ -11,7 +11,7 @@ import {
 	deleteUserSchema,
 } from './schema';
 
-export const userRoutes = [
+export const userRoutes: RouteOptions[] = [
 	{
 		method: 'GET',
 		url: '/api/v1/users',
