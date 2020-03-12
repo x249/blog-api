@@ -2,7 +2,7 @@ import Knex from 'knex';
 
 exports.up = ((knex, promise) => {
 	return knex.schema.createTable('user_account', table => {
-		table.increments('id');
+		table.bigIncrements('id');
 		table.string('full_name', 256).notNullable();
 		table.string('email', 256).notNullable();
 		table.string('password').notNullable();
