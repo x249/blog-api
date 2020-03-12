@@ -1,11 +1,11 @@
-import { FastifyInstance } from 'fastify';
+import { FastifyInstance, RouteOptions } from 'fastify';
 import { Server, IncomingMessage, ServerResponse } from 'http';
 import { HTTPClientError } from '../../utils/errors';
 import { DBError } from 'db-errors';
 
 export type RoutesApplier = (
 	fastify: FastifyInstance<Server, IncomingMessage, ServerResponse>,
-	routes: any[],
+	routes: RouteOptions[],
 ) => void;
 
 export type APIError = Error | DBError | HTTPClientError;
