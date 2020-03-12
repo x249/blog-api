@@ -17,7 +17,6 @@ const { User } = models;
 
 /**
  * Fetch all users
- * @returns {Promise<User[]>} Returned Users
  */
 const getAllUsers: GetAllUsers = async () => {
 	const users = await User.query();
@@ -27,10 +26,6 @@ const getAllUsers: GetAllUsers = async () => {
 
 /**
  * Fetch a user using their id or email
- * @param params GetUserParams
- * @param params.id User ID
- * @param params.email User Email
- * @returns {Promise<User>} Returned User
  */
 const getUser: GetUser = async params => {
 	const user = await User.query().findOne({
@@ -46,8 +41,6 @@ const getUser: GetUser = async params => {
 
 /**
  * Fetch a user using their ID
- * @param params GetUserByIdParams
- * @param params.id User ID
  * @returns {Promise<User>} Returned User
  */
 const getUserById: GetUserById = async params => {
@@ -62,9 +55,6 @@ const getUserById: GetUserById = async params => {
 
 /**
  * Create a user
- * @param params.email Users' email
- * @param params.fullName Users' full name
- * @param params.password Users' password
  */
 const createUser: CreateUser = async params => {
 	const user = await User.query()
@@ -102,8 +92,6 @@ const createUser: CreateUser = async params => {
 
 /**
  * Authenticate a user
- * @param params.email Users' email
- * @param params.password Users' password
  */
 const authenticateUser: AuthenticateUser = async params => {
 	const user = await User.query().findOne({ email: params.email });
@@ -133,12 +121,6 @@ const authenticateUser: AuthenticateUser = async params => {
 
 /**
  * Update a user using their ID
- * @param userId User ID
- * @param params Properties to update in the user
- * @param params.email Updated user email
- * @param params.fullName Updated user full name
- * @param params.password Updated user password
- * @returns {Promise<User>} User with updated fields
  */
 const updateUserById: UpdateUserById = async (userId, params) => {
 	const user = await User.query()
@@ -173,8 +155,6 @@ const updateUserById: UpdateUserById = async (userId, params) => {
 
 /**
  * Delete a user using their ID
- * @param userId User ID
- * @returns {Promise<User[]>} Deleted User(s)
  */
 const deleteUserById: DeleteUserById = async userId => {
 	const user = await User.query().findById(userId);
