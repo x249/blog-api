@@ -1,21 +1,17 @@
-import { FastifyInstance } from 'fastify';
 import fastifyHelmet from 'fastify-helmet';
 import fastifyCors from 'fastify-cors';
 import fastifySwagger from 'fastify-swagger';
 import fastifyMetrics from 'fastify-metrics';
 import underPressure from 'under-pressure';
-import { Server, IncomingMessage, ServerResponse } from 'http';
 import config from '../config';
 import { db } from '../db';
+import { RegisterMiddleware } from '../types/middleware';
 
 /**
  * Takes in a server instance and registers
  * the respective middlewares
- * @param {FastifyInstance} server The instance of fastify
  */
-const registerMiddlewares: (
-	server: FastifyInstance<Server, IncomingMessage, ServerResponse>,
-) => void = (server: FastifyInstance) => {
+const registerMiddlewares: RegisterMiddleware = server => {
 	config.isProduction &&
 		server.register(fastifyMetrics, {
 			endpoint: '/metrics',
