@@ -47,4 +47,4 @@ export type UpdateUserById = (
 	params: UpdateUserParams,
 ) => Promise<User>;
 
-export type DeleteUserById = (userId: number) => Promise<User[]>;
+export type DeleteUserById = (userId: number) => Promise<User | User[]>;
