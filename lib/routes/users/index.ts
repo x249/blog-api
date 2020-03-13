@@ -1,5 +1,4 @@
-import { FastifyRequest, FastifyReply, RouteOptions } from 'fastify';
-import { ServerResponse } from 'http';
+import { RouteOptions } from 'fastify';
 import { userController } from '../../controllers';
 import { RouteHandler } from '../../types/routes';
 import {
@@ -16,10 +15,7 @@ export const userRoutes: RouteOptions[] = [
 		method: 'GET',
 		url: '/api/v1/users',
 		schema: getAllUsersSchema,
-		handler: (async (
-			request: FastifyRequest,
-			reply: FastifyReply<ServerResponse>,
-		) => {
+		handler: (async (request, reply) => {
 			try {
 				const users = await userController.getAllUsers();
 
@@ -33,10 +29,7 @@ export const userRoutes: RouteOptions[] = [
 		method: 'GET',
 		url: '/api/v1/user/:id',
 		schema: getUserSchema,
-		handler: (async (
-			request: FastifyRequest,
-			reply: FastifyReply<ServerResponse>,
-		) => {
+		handler: (async (request, reply) => {
 			try {
 				const user = await userController.getUserById({
 					id: request.params.id,
@@ -54,10 +47,7 @@ export const userRoutes: RouteOptions[] = [
 		method: 'POST',
 		url: '/api/v1/user/new',
 		schema: newUserSchema,
-		handler: (async (
-			request: FastifyRequest,
-			reply: FastifyReply<ServerResponse>,
-		) => {
+		handler: (async (request, reply) => {
 			try {
 				const newUserPayload = await userController.createUser(request.body);
 
@@ -71,10 +61,7 @@ export const userRoutes: RouteOptions[] = [
 		method: 'POST',
 		url: '/api/v1/user/authenticate',
 		schema: authenticateUserSchema,
-		handler: (async (
-			request: FastifyRequest,
-			reply: FastifyReply<ServerResponse>,
-		) => {
+		handler: (async (request, reply) => {
 			try {
 				const authenticateUserPayload = await userController.authenticateUser(
 					request.body,
@@ -90,10 +77,7 @@ export const userRoutes: RouteOptions[] = [
 		method: 'PATCH',
 		url: '/api/v1/user/:id',
 		schema: updateUserSchema,
-		handler: (async (
-			request: FastifyRequest,
-			reply: FastifyReply<ServerResponse>,
-		) => {
+		handler: (async (request, reply) => {
 			try {
 				const updatedUser = await userController.updateUserById(
 					request.params.id,
@@ -110,10 +94,7 @@ export const userRoutes: RouteOptions[] = [
 		method: 'DELETE',
 		url: '/api/v1/user/:id',
 		schema: deleteUserSchema,
-		handler: (async (
-			request: FastifyRequest,
-			reply: FastifyReply<ServerResponse>,
-		) => {
+		handler: (async (request, reply) => {
 			try {
 				const deletedUser = await userController.deleteUserById(
 					request.params.id,
