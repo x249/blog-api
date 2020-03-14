@@ -1,3 +1,3 @@
 import { userRoutes } from './users';
 
-export default [...userRoutes];
+export const routes = [...userRoutes];
