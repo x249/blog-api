@@ -1,7 +1,11 @@
 import { Model, snakeCaseMappers, ColumnNameMappers, mixin } from 'objection';
 import visibilityPlugin from 'objection-visibility';
+import { DBErrors } from 'objection-db-errors';
 
-export default class BaseModel extends mixin(Model, [visibilityPlugin]) {
+export default class BaseModel extends mixin(Model, [
+	visibilityPlugin,
+	DBErrors,
+]) {
 	/**
 	 * Defines the lookup paths for models references in 'relationMappings'
 	 */
