@@ -1,27 +1,20 @@
 import { userController } from '../../../lib/controllers';
-import { models } from '../../../lib/db';
 
 describe('user controllers', () => {
 	test('should successfully create a user', async (done: jest.DoneCallback) => {
-		try {
-			const createdUserPayload = await userController.createUser({
-				email: 'test-user@testing.com',
-				fullName: 'test_user',
-				password: 'test_user_password',
-			});
+		const createdUserPayload = await userController.createUser({
+			email: 'create-test-user@testing.com',
+			fullName: 'test_user',
+			password: 'test_user_password',
+		});
 
-			expect(typeof createdUserPayload.token).toBe('string');
-			expect(typeof createdUserPayload.user.id).toBe('number');
-			expect(createdUserPayload.user.email).toBe('test-user@testing.com');
-			expect(createdUserPayload.user.fullName).toBe('test_user');
-			expect(typeof createdUserPayload.user.password).toBe('string');
-			done();
-		} catch (error) {
-			expect(error.name).toBe('ERR_BAD_REQUEST');
-			expect(error.message).toBe(`Email taken: test-user@testing.com`);
-			expect(error.statusCode).toBe(400);
-			done();
-		}
+		expect(typeof createdUserPayload.token).toEqual('string');
+		expect(createdUserPayload.user.email).toEqual(
+			'create-test-user@testing.com',
+		);
+		expect(createdUserPayload.user.fullName).toEqual('test_user');
+		expect(typeof createdUserPayload.user.password).toEqual('string');
+		done();
 	});
 
 	test('should fail at creating a user that already exists', async (done: jest.DoneCallback) => {
@@ -33,9 +26,9 @@ describe('user controllers', () => {
 			});
 			done();
 		} catch (error) {
-			expect(error.name).toBe('ERR_BAD_REQUEST');
-			expect(error.message).toBe(`Email taken: test-user@testing.com`);
-			expect(error.statusCode).toBe(400);
+			expect(error.name).toEqual('ERR_BAD_REQUEST');
+			expect(error.message).toEqual(`Email taken: test-user@testing.com`);
+			expect(error.statusCode).toEqual(400);
 			done();
 		}
 	});
@@ -46,10 +39,9 @@ describe('user controllers', () => {
 			password: 'test_user_password',
 		});
 
-		expect(typeof authenticateUserPayload.token).toBe('string');
-		expect(typeof authenticateUserPayload.user.id).toBe('number');
-		expect(authenticateUserPayload.user.email).toBe('test-user@testing.com');
-		expect(authenticateUserPayload.user.fullName).toBe('test_user');
+		expect(typeof authenticateUserPayload.token).toEqual('string');
+		expect(authenticateUserPayload.user.email).toEqual('test-user@testing.com');
+		expect(authenticateUserPayload.user.fullName).toEqual('test_user');
 		done();
 	});
 
@@ -61,9 +53,9 @@ describe('user controllers', () => {
 			});
 			done();
 		} catch (error) {
-			expect(error.name).toBe('ERR_FORBIDDEN');
-			expect(error.message).toBe('Invalid credentials!');
-			expect(error.statusCode).toBe(403);
+			expect(error.name).toEqual('ERR_FORBIDDEN');
+			expect(error.message).toEqual('Invalid credentials!');
+			expect(error.statusCode).toEqual(403);
 			done();
 		}
 	});
@@ -76,9 +68,9 @@ describe('user controllers', () => {
 			});
 			done();
 		} catch (error) {
-			expect(error.name).toBe('ERR_NOT_FOUND');
-			expect(error.message).toBe('User not found!');
-			expect(error.statusCode).toBe(404);
+			expect(error.name).toEqual('ERR_NOT_FOUND');
+			expect(error.message).toEqual('User not found!');
+			expect(error.statusCode).toEqual(404);
 			done();
 		}
 	});
@@ -95,8 +87,8 @@ describe('user controllers', () => {
 			email: 'test-user@testing.com',
 		});
 
-		expect(fetchedUser.email).toBe('test-user@testing.com');
-		expect(fetchedUser.fullName).toBe('test_user');
+		expect(fetchedUser.email).toEqual('test-user@testing.com');
+		expect(fetchedUser.fullName).toEqual('test_user');
 		done();
 	});
 
@@ -107,9 +99,9 @@ describe('user controllers', () => {
 			});
 			done();
 		} catch (error) {
-			expect(error.name).toBe('ERR_NOT_FOUND');
-			expect(error.message).toBe('User not found!');
-			expect(error.statusCode).toBe(404);
+			expect(error.name).toEqual('ERR_NOT_FOUND');
+			expect(error.message).toEqual('User not found!');
+			expect(error.statusCode).toEqual(404);
 			done();
 		}
 	});
@@ -118,14 +110,14 @@ describe('user controllers', () => {
 		try {
 			const fetchedUser = await userController.getUserById({ id: 1 });
 
-			expect(fetchedUser.id).toBe(1);
-			expect(typeof fetchedUser.email).toBe('string');
-			expect(typeof fetchedUser.fullName).toBe('string');
+			expect(fetchedUser.id).toEqual('1');
+			expect(typeof fetchedUser.email).toEqual('string');
+			expect(typeof fetchedUser.fullName).toEqual('string');
 			done();
 		} catch (error) {
-			expect(error.name).toBe('ERR_NOT_FOUND');
-			expect(error.message).toBe('User not found!');
-			expect(error.statusCode).toBe(404);
+			expect(error.name).toEqual('ERR_NOT_FOUND');
+			expect(error.message).toEqual('User not found!');
+			expect(error.statusCode).toEqual(404);
 			done();
 		}
 	});
@@ -135,9 +127,9 @@ describe('user controllers', () => {
 			await userController.getUserById({ id: 25456476 });
 			done();
 		} catch (error) {
-			expect(error.name).toBe('ERR_NOT_FOUND');
-			expect(error.message).toBe('User not found!');
-			expect(error.statusCode).toBe(404);
+			expect(error.name).toEqual('ERR_NOT_FOUND');
+			expect(error.message).toEqual('User not found!');
+			expect(error.statusCode).toEqual(404);
 			done();
 		}
 	});
@@ -148,12 +140,12 @@ describe('user controllers', () => {
 				fullName: 'New Testing User Full Name',
 			});
 
-			expect(updatedUser.fullName).toBe('New Testing User Full Name');
+			expect(updatedUser.fullName).toEqual('New Testing User Full Name');
 			done();
 		} catch (error) {
-			expect(error.name).toBe('ERR_NOT_FOUND');
-			expect(error.message).toBe('User not found!');
-			expect(error.statusCode).toBe(404);
+			expect(error.name).toEqual('ERR_NOT_FOUND');
+			expect(error.message).toEqual('User not found!');
+			expect(error.statusCode).toEqual(404);
 			done();
 		}
 	});
@@ -165,9 +157,9 @@ describe('user controllers', () => {
 			});
 			done();
 		} catch (error) {
-			expect(error.name).toBe('ERR_NOT_FOUND');
-			expect(error.message).toBe('User not found!');
-			expect(error.statusCode).toBe(404);
+			expect(error.name).toEqual('ERR_NOT_FOUND');
+			expect(error.message).toEqual('User not found!');
+			expect(error.statusCode).toEqual(404);
 			done();
 		}
 	});
@@ -176,13 +168,12 @@ describe('user controllers', () => {
 		try {
 			// eslint-disable-next-line
 			const deletedUser: any = await userController.deleteUserById(1);
-
-			expect(deletedUser.id).toBe(1);
+			expect(deletedUser.id).toEqual('1');
 			done();
 		} catch (error) {
-			expect(error.name).toBe('ERR_NOT_FOUND');
-			expect(error.message).toBe('User not found!');
-			expect(error.statusCode).toBe(404);
+			expect(error.name).toEqual('ERR_NOT_FOUND');
+			expect(error.message).toEqual('User not found!');
+			expect(error.statusCode).toEqual(404);
 			done();
 		}
 	});
@@ -192,21 +183,10 @@ describe('user controllers', () => {
 			await userController.deleteUserById(12345);
 			done();
 		} catch (error) {
-			expect(error.name).toBe('ERR_NOT_FOUND');
-			expect(error.message).toBe('User not found!');
-			expect(error.statusCode).toBe(404);
+			expect(error.name).toEqual('ERR_NOT_FOUND');
+			expect(error.message).toEqual('User not found!');
+			expect(error.statusCode).toEqual(404);
 			done();
 		}
-	});
-
-	afterAll(async (done: jest.DoneCallback) => {
-		const deletedRecords = await models.User.query()
-			.findOne({
-				email: 'test-user@testing.com',
-			})
-			.delete();
-
-		console.log(`Deleted ${deletedRecords} users`);
-		done();
 	});
 });

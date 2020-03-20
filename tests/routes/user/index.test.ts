@@ -1,6 +1,7 @@
 import server from '../../../lib/server';
 import { FastifyInstance } from 'fastify';
 import { Server, IncomingMessage, ServerResponse } from 'http';
+import { userController } from '../../../lib/controllers';
 
 describe('user routes tests', () => {
 	let fastify: FastifyInstance<Server, IncomingMessage, ServerResponse>;
@@ -22,8 +23,8 @@ describe('user routes tests', () => {
 
 		const parsedResponsePayload = JSON.parse(response.payload);
 
-		expect(response.statusCode).toBe(200);
-		expect(typeof parsedResponsePayload.users).toBe('object');
+		expect(response.statusCode).toEqual(200);
+		expect(typeof parsedResponsePayload.users).toEqual('object');
 		done();
 	});
 
@@ -38,103 +39,102 @@ describe('user routes tests', () => {
 
 		const parsedResponsePayload = JSON.parse(response.payload);
 
-		expect(response.statusCode).toBe(200);
-		expect(parsedResponsePayload.user.email).toBe(mockedUserPayload.email);
-		expect(parsedResponsePayload.user.fullName).toBe(
+		expect(response.statusCode).toEqual(200);
+		expect(parsedResponsePayload.user.email).toEqual(mockedUserPayload.email);
+		expect(parsedResponsePayload.user.fullName).toEqual(
 			mockedUserPayload.fullName,
 		);
 		done();
 	});
 
 	test('should successfully fetch a user using their id', async (done: jest.DoneCallback) => {
-		try {
-			const response = await fastify.inject({
-				method: 'GET',
-				url: '/api/v1/user/1',
-			});
+		const createUserPayload = await userController.createUser({
+			email: 'create-temp-user@testing.co',
+			fullName: 'Create Temp User',
+			password: 'temp_user_p@ssw0rd',
+		});
 
-			const parsedResponsePayload = JSON.parse(response.payload);
+		const response = await fastify.inject({
+			method: 'GET',
+			url: `/api/v1/user/${createUserPayload.user.id}`,
+		});
 
-			expect(response.statusCode).toBe(200);
-			expect(parsedResponsePayload.user.id).toBe(1);
-			expect(parsedResponsePayload.user.email).toBe(mockedUserPayload.email);
-			expect(parsedResponsePayload.user.fullName).toBe(
-				mockedUserPayload.fullName,
-			);
-			done();
-		} catch (error) {
-			expect(error.message).toBe('User not found!');
-			expect(error.statusCode).toBe(404);
-			done();
-		}
+		const parsedResponsePayload = JSON.parse(response.payload);
+
+		expect(response.statusCode).toEqual(200);
+		expect(parsedResponsePayload.user.email).toEqual(
+			createUserPayload.user.email,
+		);
+		expect(parsedResponsePayload.user.fullName).toEqual(
+			createUserPayload.user.fullName,
+		);
+		done();
 	});
 
 	test('should successfully authenticate a user using their credentials', async (done: jest.DoneCallback) => {
-		try {
-			const response = await fastify.inject({
-				method: 'POST',
-				url: '/api/v1/user/authenticate',
-				payload: {
-					email: mockedUserPayload.email,
-					password: mockedUserPayload.password,
-				},
-			});
+		const response = await fastify.inject({
+			method: 'POST',
+			url: '/api/v1/user/authenticate',
+			payload: {
+				email: mockedUserPayload.email,
+				password: mockedUserPayload.password,
+			},
+		});
 
-			const parsedResponsePayload = JSON.parse(response.payload);
+		const parsedResponsePayload = JSON.parse(response.payload);
 
-			expect(response.statusCode).toBe(200);
-			expect(parsedResponsePayload.user.id).toBe(1);
-			expect(parsedResponsePayload.user.email).toBe(mockedUserPayload.email);
-			expect(parsedResponsePayload.user.fullName).toBe(
-				mockedUserPayload.fullName,
-			);
-			expect(typeof parsedResponsePayload.token).toBe('string');
-			done();
-		} catch (error) {
-			expect(error.message).toBe('User not found!');
-			expect(error.statusCode).toBe(404);
-			done();
-		}
+		expect(response.statusCode).toEqual(200);
+		expect(parsedResponsePayload.user.email).toEqual(mockedUserPayload.email);
+		expect(parsedResponsePayload.user.fullName).toEqual(
+			mockedUserPayload.fullName,
+		);
+		expect(typeof parsedResponsePayload.token).toEqual('string');
+		done();
 	});
 
 	test('should successfully update a user using their id', async (done: jest.DoneCallback) => {
-		try {
-			const response = await fastify.inject({
-				method: 'PATCH',
-				url: '/api/v1/user/1',
-				payload: {
-					fullName: 'Updated full name',
-				},
-			});
+		const updateUserPayload = await userController.createUser({
+			email: 'update-temp-user@testing.co',
+			fullName: 'Update Temp User',
+			password: 'temp_user_p@ssw0rd',
+		});
 
-			const parsedResponsePayload = JSON.parse(response.payload);
+		const response = await fastify.inject({
+			method: 'PATCH',
+			url: `/api/v1/user/${updateUserPayload.user.id}`,
+			payload: {
+				fullName: 'Updated full name',
+			},
+		});
 
-			expect(response.statusCode).toBe(200);
-			expect(parsedResponsePayload.user.fullName).toBe('Updated full name');
-			done();
-		} catch (error) {
-			expect(error.message).toBe('User not found!');
-			expect(error.statusCode).toBe(404);
-			done();
-		}
+		const parsedResponsePayload = JSON.parse(response.payload);
+
+		expect(response.statusCode).toEqual(200);
+		expect(parsedResponsePayload.user.fullName).toEqual('Updated full name');
+		done();
 	});
 
 	test('should successfully delete a user using their id', async (done: jest.DoneCallback) => {
-		try {
-			const response = await fastify.inject({
-				method: 'DELETE',
-				url: '/api/v1/user/1',
-			});
+		const deleteUserPayload = await userController.createUser({
+			email: 'delete-temp-user@testing.co',
+			fullName: 'Delete Temp User',
+			password: 'temp_user_p@ssw0rd',
+		});
 
-			const parsedResponsePayload = JSON.parse(response.payload);
+		const response = await fastify.inject({
+			method: 'DELETE',
+			url: `/api/v1/user/${deleteUserPayload.user.id}`,
+		});
 
-			console.log(parsedResponsePayload);
-			expect(response.statusCode).toBe(200);
-			done();
-		} catch (error) {
-			expect(error.message).toBe('User not found!');
-			expect(error.statusCode).toBe(404);
-			done();
-		}
+		const parsedResponsePayload = JSON.parse(response.payload);
+
+		expect(response.statusCode).toEqual(200);
+		expect(parsedResponsePayload.user.email).toEqual(
+			deleteUserPayload.user.email,
+		);
+		expect(parsedResponsePayload.user.fullName).toEqual(
+			deleteUserPayload.user.fullName,
+		);
+		done();
 	});
 });
