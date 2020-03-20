@@ -7,6 +7,7 @@ module.exports = {
 		migrations: {
 			directory: './lib/db/migrations',
 		},
+		debug: config.logger.level === 'debug',
 	},
 	testing: {
 		client: 'pg',
@@ -14,5 +15,6 @@ module.exports = {
 		migrations: {
 			directory: './lib/db/migrations',
 		},
+		debug: config.logger.level === 'debug',
 	},
 };
