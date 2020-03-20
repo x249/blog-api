@@ -1,6 +1,6 @@
 import Knex from 'knex';
 
-exports.up = ((knex, promise) => {
+exports.up = ((knex, Promise) => {
 	return knex.schema.createTable('user_account', table => {
 		table.bigIncrements('id');
 		table.string('full_name', 256).notNullable();
@@ -12,8 +12,10 @@ exports.up = ((knex, promise) => {
 		table.timestamp('created_at').defaultTo(knex.fn.now());
 		table.timestamp('updated_at').defaultTo(knex.fn.now());
 	});
-}) as (knex: Knex, promise: Promise<any>) => Knex.SchemaBuilder;
+}) as (knex: Knex, Promise: PromiseConstructor) => Knex.SchemaBuilder;
 
-exports.down = ((knex, promise) => {
-	return knex.schema.dropTableIfExists('user_account');
-}) as (knex: Knex, promise: Promise<any>) => Knex.SchemaBuilder;
+exports.down = ((knex, Promise) =>
+	knex.schema.dropTableIfExists('user_account')) as (
+	knex: Knex,
+	Promise: PromiseConstructor,
+) => Knex.SchemaBuilder;
