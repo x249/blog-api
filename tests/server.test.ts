@@ -17,7 +17,7 @@ describe('server tests', () => {
 
 		const parsedResponsePayload = JSON.parse(response.payload);
 
-		expect(response.statusCode).toBe(200);
+		expect(response.statusCode).toEqual(200);
 		expect(parsedResponsePayload).toStrictEqual({ status: 'ok' });
 		done();
 	});
