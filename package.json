@@ -10,7 +10,7 @@
 		"build": "tsc",
 		"start": "node dist",
 		"dev": "tsc-watch --onSuccess 'node dist/index.js'",
-		"run-migrations": "knex migrate:up",
+		"run-migrations": "knex migrate:latest --env $NODE_ENV",
 		"test": "jest --verbose --detectOpenHandles",
 		"coverage": "jest --coverage --verbose --detectOpenHandles",
 		"lint": "eslint --ext .ts,.js . --ignore-path .gitignore",
