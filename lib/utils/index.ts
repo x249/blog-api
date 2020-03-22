@@ -7,7 +7,7 @@ import * as errors from './errors';
  */
 // eslint-disable-next-line
 const applyRoutes: RoutesApplier = (server, routes) => {
-	routes.forEach(route => server.route(route));
+	routes.forEach((route) => server.route(route));
 };
 
 export { applyRoutes, errors };

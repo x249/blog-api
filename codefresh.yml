@@ -1,22 +1,22 @@
 version: '1.0'
 steps:
   main_clone:
-    type: "git-clone"
-    description: "Cloning main repository..."
+    type: 'git-clone'
+    description: 'Cloning main repository...'
     repo: x249/blog-api
     revision: ${{CF_BRANCH}}
   perform_tests:
     image: node:12.14.0-alpine3.11
     fail_fast: false
     working_directory: ${{main_clone}}
-    description: "Performing tests..."
+    description: 'Performing tests...'
     environment: &test_postgresql_vars
       - POSTGRES_USER=test_user
       - POSTGRES_PASSWORD=super_secret_testing_db_password
       - POSTGRES_DB=testing_database
     commands:
       - apk add curl bash
-      -	apk add --virtual build-dependencies gcc g++ make python-dev
+      - apk add --virtual build-dependencies gcc g++ make python-dev
       - npm i -g node-gyp
       - yarn install
       - apk del build-dependencies
@@ -36,4 +36,4 @@ steps:
         periodSeconds: 15
         image: postgres:12
         commands:
-          - "pg_isready -h postgres" 
+          - 'pg_isready -h postgres'

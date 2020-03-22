@@ -24,7 +24,7 @@ const getAllArticles: GetAllArticles = async () => {
 /**
  * Fetch an article using params
  */
-const getArticle: GetArticle = async params => {
+const getArticle: GetArticle = async (params) => {
 	const article = await Article.query().findOne({
 		...params,
 	});
@@ -40,7 +40,7 @@ const getArticle: GetArticle = async params => {
 /**
  * Fetch an article using ID
  */
-const getArticleById: GetArticleById = async params => {
+const getArticleById: GetArticleById = async (params) => {
 	const article = await Article.query().findById(params.id);
 
 	const articleExists = checks.entityExists(article);
@@ -54,14 +54,12 @@ const getArticleById: GetArticleById = async params => {
 /**
  * Create an article
  */
-const createArticle: CreateArticle = async params => {
+const createArticle: CreateArticle = async (params) => {
 	const article = await Article.query().findOne({
 		title: params.title,
 	});
 
-	const user = await User.query()
-		.findById(params.userId)
-		.select('id');
+	const user = await User.query().findById(params.userId).select('id');
 
 	const category = await Category.query()
 		.findById(params.categoryId)
@@ -93,9 +91,7 @@ const createArticle: CreateArticle = async params => {
  * Update an article using ID
  */
 const updateArticle: UpdateArticle = async (articleId, params) => {
-	const article = await Article.query()
-		.findById(articleId)
-		.select('id');
+	const article = await Article.query().findById(articleId).select('id');
 
 	const articleExists = checks.entityExists(article);
 
@@ -112,20 +108,15 @@ const updateArticle: UpdateArticle = async (articleId, params) => {
 /**
  * Delete an article using ID
  */
-const deleteArticle: DeleteArticle = async params => {
-	const article = await Article.query()
-		.findById(params.id)
-		.select('id');
+const deleteArticle: DeleteArticle = async (params) => {
+	const article = await Article.query().findById(params.id).select('id');
 
 	const articleExists = checks.entityExists(article);
 
 	if (!articleExists)
 		throw new errors.HTTP404Error(`Article with ID ${params.id} not found!`);
 
-	const deletedArticle = article
-		.$query()
-		.delete()
-		.returning('*');
+	const deletedArticle = article.$query().delete().returning('*');
 
 	return deletedArticle;
 };

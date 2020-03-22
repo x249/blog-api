@@ -41,7 +41,7 @@ export class User extends BaseModel {
 	static get relationMappings(): {} {
 		// Importing models here is a one way to avoid require loops.
 		// eslint-disable-next-line
-		const Article = require("./article");
+		const Article = require('./article');
 
 		return {
 			articles: {

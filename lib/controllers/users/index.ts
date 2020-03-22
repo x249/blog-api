@@ -27,7 +27,7 @@ const getAllUsers: GetAllUsers = async () => {
 /**
  * Fetch a user using their id or email
  */
-const getUser: GetUser = async params => {
+const getUser: GetUser = async (params) => {
 	const user = await User.query().findOne({
 		...params,
 	});
@@ -43,7 +43,7 @@ const getUser: GetUser = async params => {
  * Fetch a user using their ID
  * @returns {Promise<User>} Returned User
  */
-const getUserById: GetUserById = async params => {
+const getUserById: GetUserById = async (params) => {
 	const user = await User.query().findById(params.id);
 
 	const userExists = checks.entityExists(user);
@@ -56,7 +56,7 @@ const getUserById: GetUserById = async params => {
 /**
  * Create a user
  */
-const createUser: CreateUser = async params => {
+const createUser: CreateUser = async (params) => {
 	const user = await User.query()
 		.findOne({
 			email: params.email,
@@ -93,7 +93,7 @@ const createUser: CreateUser = async params => {
 /**
  * Authenticate a user
  */
-const authenticateUser: AuthenticateUser = async params => {
+const authenticateUser: AuthenticateUser = async (params) => {
 	const user = await User.query().findOne({ email: params.email });
 
 	const userExists = checks.entityExists(user);
@@ -123,9 +123,7 @@ const authenticateUser: AuthenticateUser = async params => {
  * Update a user using their ID
  */
 const updateUserById: UpdateUserById = async (userId, params) => {
-	const user = await User.query()
-		.findById(userId)
-		.select('id');
+	const user = await User.query().findById(userId).select('id');
 
 	const userExists = checks.entityExists(user);
 
@@ -156,16 +154,14 @@ const updateUserById: UpdateUserById = async (userId, params) => {
 /**
  * Delete a user using their ID
  */
-const deleteUserById: DeleteUserById = async userId => {
+const deleteUserById: DeleteUserById = async (userId) => {
 	const user = await User.query().findById(userId);
 
 	const userExists = checks.entityExists(user);
 
 	if (!userExists) throw new errors.HTTP404Error('User not found!');
 
-	const deletedUser = await User.query()
-		.deleteById(userId)
-		.returning('*');
+	const deletedUser = await User.query().deleteById(userId).returning('*');
 
 	return deletedUser;
 };

@@ -11,7 +11,7 @@ import { RegisterMiddleware } from '../types/middleware';
  * Takes in a server instance and registers
  * the respective middlewares
  */
-const registerMiddlewares: RegisterMiddleware = server => {
+const registerMiddlewares: RegisterMiddleware = (server) => {
 	config.isProduction &&
 		server.register(fastifyMetrics, {
 			endpoint: '/metrics',

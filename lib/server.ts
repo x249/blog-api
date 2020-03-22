@@ -20,7 +20,7 @@ registerMiddlewares(server);
 applyRoutes(server, routes);
 errors.handleErrors(server);
 
-server.ready(error => {
+server.ready((error) => {
 	if (error) {
 		server.log.error(error);
 		process.exit(345);

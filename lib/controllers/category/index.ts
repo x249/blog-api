@@ -25,7 +25,7 @@ const getAllCategories: GetAllCategories = async () => {
 /**
  * Fetch a category using params
  */
-const getCategory: GetCategory = async params => {
+const getCategory: GetCategory = async (params) => {
 	const category = await Category.query().findOne({
 		...params,
 	});
@@ -41,7 +41,7 @@ const getCategory: GetCategory = async params => {
 /**
  * Fetch a category using ID param
  */
-const getCategoryById: GetCategoryById = async params => {
+const getCategoryById: GetCategoryById = async (params) => {
 	const category = await Category.query().findById(params.id);
 
 	const categoryExists = checks.entityExists(category);
@@ -55,7 +55,7 @@ const getCategoryById: GetCategoryById = async params => {
 /**
  * Create a category
  */
-const createCategory: CreateCategory = async params => {
+const createCategory: CreateCategory = async (params) => {
 	const category = await Category.query().findOne({
 		name: params.name,
 	});
@@ -91,7 +91,7 @@ const updateCategoryById: UpdateCategoryById = async (categoryId, params) => {
 /**
  * Delete a category using params
  */
-const deleteCategory: DeleteCateogry = async params => {
+const deleteCategory: DeleteCateogry = async (params) => {
 	const category = await Category.query().findOne({ ...params });
 
 	const categoryExists = checks.entityExists(category);
@@ -99,10 +99,7 @@ const deleteCategory: DeleteCateogry = async params => {
 	if (!categoryExists)
 		throw new errors.HTTP404Error(`Category ${params.name} not found!`);
 
-	const deletedCategory = category
-		.$query()
-		.delete()
-		.returning('*');
+	const deletedCategory = category.$query().delete().returning('*');
 
 	return deletedCategory;
 };
@@ -110,7 +107,7 @@ const deleteCategory: DeleteCateogry = async params => {
 /**
  * Delete a category using ID
  */
-const deleteCategoryById: DeleteCategoryById = async params => {
+const deleteCategoryById: DeleteCategoryById = async (params) => {
 	const category = await Category.query().findById(params.id);
 
 	const categoryExists = checks.entityExists(category);
@@ -118,10 +115,7 @@ const deleteCategoryById: DeleteCategoryById = async params => {
 	if (!categoryExists)
 		throw new errors.HTTP404Error(`Category ${params.id} not found!`);
 
-	return await category
-		.$query()
-		.delete()
-		.returning('*');
+	return await category.$query().delete().returning('*');
 };
 
 export default {

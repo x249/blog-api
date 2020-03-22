@@ -11,7 +11,7 @@ const requiredEnvirontmentVariables: string[] = [
 ];
 
 /* Checks if the required variable is injected to the environment */
-requiredEnvirontmentVariables.forEach(variable => {
+requiredEnvirontmentVariables.forEach((variable) => {
 	if (!(variable in process.env)) {
 		throw new Error(`Variable ${variable} not found in the environment!`);
 	}

@@ -10,11 +10,11 @@ const start = async (): Promise<void> => {
 	}
 };
 
-process.on('uncaughtException', error => {
+process.on('uncaughtException', (error) => {
 	console.error(error);
 	process.exit(331);
 });
-process.on('unhandledRejection', error => {
+process.on('unhandledRejection', (error) => {
 	console.error(error);
 	process.exit(332);
 });

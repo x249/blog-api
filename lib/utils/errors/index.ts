@@ -9,7 +9,7 @@ import config from '../../config';
 /**
  * Handle errors related to User actions and DB actions
  */
-const handleErrors: ErrorHandler = server => {
+const handleErrors: ErrorHandler = (server) => {
 	return server.addHook('onError', async (request, reply, error) => {
 		if (error instanceof HTTPClientError) {
 			reply.code(error.statusCode).send({ error });
